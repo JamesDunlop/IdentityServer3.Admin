@@ -24,6 +24,8 @@ using IdentityAdmin.Api.Models.Client;
 using IdentityAdmin.Api.Models.Scope;
 using IdentityAdmin.Core;
 using IdentityAdmin.Core.Metadata;
+using IdentityAdmin.Extensions;
+using IdentityAdmin.Logging;
 
 namespace IdentityAdmin.Api.Controllers
 {
@@ -31,6 +33,7 @@ namespace IdentityAdmin.Api.Controllers
     [RoutePrefix(Constants.MetadataRoutePrefix)]
     public class MetaController : ApiController
     {
+        private readonly static ILog Logger = LogProvider.GetCurrentClassLogger();
         private readonly IIdentityAdminService _identityAdminService;
 
         public MetaController(IIdentityAdminService identityAdminService)
@@ -69,13 +72,13 @@ namespace IdentityAdmin.Api.Controllers
 
             var links = new Dictionary<string, object>();
 
-            links["clients"] = Url.Link(Constants.RouteNames.GetClients, null);
+            links["clients"] = Url.LinkWithoutProtocol(Constants.RouteNames.GetClients, null);
             if (coreMeta.ClientMetaData.SupportsCreate)
             {
                 links["createClient"] = new CreateClientLink(Url, coreMeta.ClientMetaData);
             }
 
-            links["scopes"] = Url.Link(Constants.RouteNames.GetScopes, null);
+            links["scopes"] = Url.LinkWithoutProtocol(Constants.RouteNames.GetScopes, null);
             if (coreMeta.ScopeMetaData.SupportsCreate)
             {
                 links["createScope"] = new CreateScopeLink(Url, coreMeta.ScopeMetaData);

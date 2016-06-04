@@ -145,10 +145,11 @@ namespace IdentityAdmin.Api.Controllers
                 if (result.IsSuccess)
                 {
                     var url = Url.Link(Constants.RouteNames.GetClient, new { subject = result.Result.Subject });
+                    var jsUrl = Url.LinkWithoutProtocol(Constants.RouteNames.GetClient, new { subject = result.Result.Subject });
                     var resource = new
                     {
                         Data = new { subject = result.Result.Subject },
-                        Links = new { detail = url }
+                        Links = new { detail = jsUrl }
                     };
                     return Created(url, resource);
                 }
